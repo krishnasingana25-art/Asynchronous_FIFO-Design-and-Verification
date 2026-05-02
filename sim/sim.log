@@ -1,1 +1,1024 @@
+xrun(64): 24.09-s007: (c) Copyright 1995-2025 Cadence Design Systems, Inc.
+TOOL:	xrun(64)	24.09-s007: Started on Mar 30, 2026 at 17:32:28 IST
+xrun
+	-64bit
+	-sv
+	-timescale 1ns/1ps
+	rtl/FIFO.v
+	rtl/two_ff_sync.v
+	rtl/FIFO_memory.v
+	rtl/rptr_empty.v
+	rtl/wptr_full.v
+	tb/fifo_if.sv
+	tb/fifo_assertions.sv
+	tb/tb_async_fifo.sv
+	-top tb_async_fifo
+	-log sim/sim.log
+Recompiling... reason: file './tb/fifo_assertions.sv' is newer than expected.
+	expected: Mon Mar 30 01:04:16 2026
+	actual:   Mon Mar 30 17:46:30 2026
+file: tb/fifo_assertions.sv
+	module worklib.fifo_assertions:sv
+		errors: 0, warnings: 0
+	Elaborating the design hierarchy:
+		Caching library 'worklib' ....... Done
+	Top level design units:
+		$unit_0x3da4162b
+		tb_async_fifo
+	Building instance overlay tables: .................... Done
+	Generating native compiled code:
+		worklib.fifo_assertions:sv <0x29012ac7>
+			streams: 119, words: 80857
+	Building instance specific data structures.
+	Loading native compiled code:     .................... Done
+	Design hierarchy summary:
+		                 Instances  Unique
+		Modules:                 8       7
+		Interfaces:              1       1
+		Registers:             282     280
+		Scalar wires:           16       -
+		Vectored wires:         15       -
+		Named events:           16      16
+		Always blocks:         142     141
+		Initial blocks:         50      50
+		Clocking blocks:         4       4
+		Clocking items:          0      16
+		Parallel blocks:         1       1
+		Cont. assignments:      11      11
+		Pseudo assignments:     12       -
+		Assertions:             25      25
+		Compilation units:       1       1
+		Process Clocks:         34       8
+		Simulation timescale:  1ps
+	Writing initial simulation snapshot: worklib.tb_async_fifo:sv
+Loading snapshot worklib.tb_async_fifo:sv .................... Done
+SVSEED default: 1
+xcelium> source /vlsi/cad/cadence/XCELIUM2409/tools/xcelium/files/xmsimrc
+xcelium> run
 
+	Ø
+  Async FIFO Testbench  |  Xcelium
+  DSIZE=8 ASIZE=4 DEPTH=16
+  wclk=10ns  rclk=16ns
+	Ø
+
+xmsim: *W,DVEXACC: some objects excluded from $dumpvars due to access restrictions, use +access+r on command line for access to all objects.
+            File: ./tb/tb_async_fifo.sv, line = 446, pos = 16
+           Scope: tb_async_fifo
+            Time: 0 FS + 0
+
+
+// TEST 01: Basic Sequential Write -> Read
+[344000] [RST] Reset released
+[356000] [WR]  0x01  depth=1
+[376000] [WR]  0x04  depth=2
+[396000] [WR]  0x07  depth=3
+[416000] [WR]  0x0a  depth=4
+[436000] [WR]  0x0d  depth=5
+[456000] [WR]  0x10  depth=6
+[476000] [WR]  0x13  depth=7
+[496000] [WR]  0x16  depth=8
+[505000] [RD]  0x01 == exp 0x01  PASS
+[537000] [RD]  0x04 == exp 0x04  PASS
+[569000] [RD]  0x07 == exp 0x07  PASS
+[601000] [RD]  0x0a == exp 0x0a  PASS
+[633000] [RD]  0x0d == exp 0x0d  PASS
+[665000] [RD]  0x10 == exp 0x10  PASS
+[697000] [RD]  0x13 == exp 0x13  PASS
+[729000] [RD]  0x16 == exp 0x16  PASS
+[840000] [CHK] rempty ASSERTED â PASS (T01)
+
+// TEST 02: Fill to Full + Overflow Attempt
+[1096000] [RST] Reset released
+[1116000] [WR]  0xa0  depth=1
+[1136000] [WR]  0xa1  depth=2
+[1156000] [WR]  0xa2  depth=3
+[1176000] [WR]  0xa3  depth=4
+[1196000] [WR]  0xa4  depth=5
+[1216000] [WR]  0xa5  depth=6
+[1236000] [WR]  0xa6  depth=7
+[1256000] [WR]  0xa7  depth=8
+[1276000] [WR]  0xa8  depth=9
+[1296000] [WR]  0xa9  depth=10
+[1316000] [WR]  0xaa  depth=11
+[1336000] [WR]  0xab  depth=12
+[1356000] [WR]  0xac  depth=13
+[1376000] [WR]  0xad  depth=14
+[1396000] [WR]  0xae  depth=15
+[1416000] [WR]  0xaf  depth=16
+[1455000] [CHK] wfull ASSERTED â PASS (T02 fill)
+[1476000] [T02] Overflow write attempted (expect drop)
+[1481000] [RD]  0xa0 == exp 0xa0  PASS
+[1513000] [RD]  0xa1 == exp 0xa1  PASS
+[1545000] [RD]  0xa2 == exp 0xa2  PASS
+[1577000] [RD]  0xa3 == exp 0xa3  PASS
+[1609000] [RD]  0xa4 == exp 0xa4  PASS
+[1641000] [RD]  0xa5 == exp 0xa5  PASS
+[1673000] [RD]  0xa6 == exp 0xa6  PASS
+[1705000] [RD]  0xa7 == exp 0xa7  PASS
+[1737000] [RD]  0xa8 == exp 0xa8  PASS
+[1769000] [RD]  0xa9 == exp 0xa9  PASS
+[1801000] [RD]  0xaa == exp 0xaa  PASS
+[1833000] [RD]  0xab == exp 0xab  PASS
+[1865000] [RD]  0xac == exp 0xac  PASS
+[1897000] [RD]  0xad == exp 0xad  PASS
+[1929000] [RD]  0xae == exp 0xae  PASS
+[1961000] [RD]  0xaf == exp 0xaf  PASS
+[2072000] [CHK] rempty ASSERTED â PASS (T02 drain)
+
+// TEST 03: Simultaneous Read & Write
+[2328000] [RST] Reset released
+[2346000] [WR]  0x20  depth=1
+[2366000] [WR]  0x21  depth=2
+[2386000] [WR]  0x22  depth=3
+[2406000] [WR]  0x23  depth=4
+[2426000] [WR]  0x24  depth=5
+[2446000] [WR]  0x25  depth=6
+[2466000] [WR]  0x26  depth=7
+[2486000] [WR]  0x27  depth=8
+[2873000] [RD]  0x64 == exp 0x64  PASS
+[2905000] [RD]  0x65 == exp 0x65  PASS
+[2937000] [RD]  0x66 == exp 0x66  PASS
+[2969000] [RD]  0x67 == exp 0x67  PASS
+[3001000] [RD]  0x68 == exp 0x68  PASS
+[3033000] [RD]  0x69 == exp 0x69  PASS
+[3065000] [RD]  0x6a == exp 0x6a  PASS
+[3097000] [RD]  0x6b == exp 0x6b  PASS
+[3113000] [T03] Simultaneous R/W complete
+
+// TEST 04: Back-to-Back Burst Write -> Burst Read
+[3368000] [RST] Reset released
+xmsim: *E,ASRTST (./tb/fifo_assertions.sv,203): (time 3432 NS) Assertion tb_async_fifo.dut.u_fifo_assert.AST_RQ2WPTR_STABLE has failed
+[SVA FAIL] rq2_wptr changed by >1 bit â synchronizer glitch proxy!
+xmsim: *E,ASRTST (./tb/fifo_assertions.sv,203): (time 3448 NS) Assertion tb_async_fifo.dut.u_fifo_assert.AST_RQ2WPTR_STABLE has failed
+[SVA FAIL] rq2_wptr changed by >1 bit â synchronizer glitch proxy!
+xmsim: *E,ASRTST (./tb/fifo_assertions.sv,203): (time 3480 NS) Assertion tb_async_fifo.dut.u_fifo_assert.AST_RQ2WPTR_STABLE has failed
+[SVA FAIL] rq2_wptr changed by >1 bit â synchronizer glitch proxy!
+xmsim: *E,ASRTST (./tb/fifo_assertions.sv,203): (time 3512 NS) Assertion tb_async_fifo.dut.u_fifo_assert.AST_RQ2WPTR_STABLE has failed
+[SVA FAIL] rq2_wptr changed by >1 bit â synchronizer glitch proxy!
+xmsim: *E,ASRTST (./tb/fifo_assertions.sv,203): (time 3528 NS) Assertion tb_async_fifo.dut.u_fifo_assert.AST_RQ2WPTR_STABLE has failed
+[SVA FAIL] rq2_wptr changed by >1 bit â synchronizer glitch proxy!
+xmsim: *E,ASRTST (./tb/fifo_assertions.sv,203): (time 3560 NS) Assertion tb_async_fifo.dut.u_fifo_assert.AST_RQ2WPTR_STABLE has failed
+[SVA FAIL] rq2_wptr changed by >1 bit â synchronizer glitch proxy!
+[3575000] [CHK] wfull ASSERTED â PASS (T04 burst-wr)
+[3928000] [CHK] rempty ASSERTED â PASS (T04 burst-rd)
+
+// TEST 05: Reset During Active Operation
+[4184000] [RST] Reset released
+[4196000] [WR]  0xb0  depth=1
+[4216000] [WR]  0xb1  depth=2
+[4236000] [WR]  0xb2  depth=3
+[4256000] [WR]  0xb3  depth=4
+[4276000] [WR]  0xb4  depth=5
+[4296000] [WR]  0xb5  depth=6
+[4648000] [CHK] rempty ASSERTED â PASS (T05 after reset)
+[4666000] [WR]  0xde  depth=1
+[4686000] [WR]  0xad  depth=2
+[4697000] [RD]  SKIP (empty)
+[4713000] [RD]  0xde == exp 0xde  PASS
+[4729000] [T05] Post-reset operation OK
+
+// TEST 06: Ping-Pong Write-1/Read-1 x32
+[4984000] [RST] Reset released
+[4996000] [WR]  0x40  depth=1
+[5001000] [RD]  SKIP (empty)
+[5016000] [WR]  0x41  depth=2
+[5033000] [RD]  0x40 == exp 0x40  PASS
+[5066000] [WR]  0x42  depth=2
+[5081000] [RD]  0x41 == exp 0x41  PASS
+[5116000] [WR]  0x43  depth=2
+[5129000] [RD]  0x42 == exp 0x42  PASS
+[5166000] [WR]  0x44  depth=2
+[5177000] [RD]  0x43 == exp 0x43  PASS
+[5206000] [WR]  0x45  depth=2
+[5209000] [RD]  0x44 == exp 0x44  PASS
+[5246000] [WR]  0x46  depth=2
+[5257000] [RD]  0x45 == exp 0x45  PASS
+[5286000] [WR]  0x47  depth=2
+[5289000] [RD]  0x46 == exp 0x46  PASS
+[5326000] [WR]  0x48  depth=2
+[5337000] [RD]  0x47 == exp 0x47  PASS
+[5366000] [WR]  0x49  depth=2
+[5369000] [RD]  0x48 == exp 0x48  PASS
+[5406000] [WR]  0x4a  depth=2
+[5417000] [RD]  0x49 == exp 0x49  PASS
+[5446000] [WR]  0x4b  depth=2
+[5449000] [RD]  0x4a == exp 0x4a  PASS
+[5486000] [WR]  0x4c  depth=2
+[5497000] [RD]  0x4b == exp 0x4b  PASS
+[5526000] [WR]  0x4d  depth=2
+[5529000] [RD]  0x4c == exp 0x4c  PASS
+[5566000] [WR]  0x4e  depth=2
+[5577000] [RD]  0x4d == exp 0x4d  PASS
+[5606000] [WR]  0x4f  depth=2
+[5609000] [RD]  0x4e == exp 0x4e  PASS
+[5646000] [WR]  0x50  depth=2
+[5657000] [RD]  0x4f == exp 0x4f  PASS
+[5686000] [WR]  0x51  depth=2
+[5689000] [RD]  0x50 == exp 0x50  PASS
+[5726000] [WR]  0x52  depth=2
+[5737000] [RD]  0x51 == exp 0x51  PASS
+[5766000] [WR]  0x53  depth=2
+[5769000] [RD]  0x52 == exp 0x52  PASS
+[5806000] [WR]  0x54  depth=2
+[5817000] [RD]  0x53 == exp 0x53  PASS
+[5846000] [WR]  0x55  depth=2
+[5849000] [RD]  0x54 == exp 0x54  PASS
+[5886000] [WR]  0x56  depth=2
+[5897000] [RD]  0x55 == exp 0x55  PASS
+[5926000] [WR]  0x57  depth=2
+[5929000] [RD]  0x56 == exp 0x56  PASS
+[5966000] [WR]  0x58  depth=2
+[5977000] [RD]  0x57 == exp 0x57  PASS
+[6006000] [WR]  0x59  depth=2
+[6009000] [RD]  0x58 == exp 0x58  PASS
+[6046000] [WR]  0x5a  depth=2
+[6057000] [RD]  0x59 == exp 0x59  PASS
+[6086000] [WR]  0x5b  depth=2
+[6089000] [RD]  0x5a == exp 0x5a  PASS
+[6126000] [WR]  0x5c  depth=2
+[6137000] [RD]  0x5b == exp 0x5b  PASS
+[6166000] [WR]  0x5d  depth=2
+[6169000] [RD]  0x5c == exp 0x5c  PASS
+[6206000] [WR]  0x5e  depth=2
+[6217000] [RD]  0x5d == exp 0x5d  PASS
+[6246000] [WR]  0x5f  depth=2
+[6249000] [RD]  0x5e == exp 0x5e  PASS
+[6360000] [CHK] rempty NOT ASSERTED â FAIL (T06)
+
+// TEST 07: Gray-Code Pointer Wrap-Around (3 x DEPTH)
+[6616000] [RST] Reset released
+[6636000] [WR]  0x00  depth=1
+[6656000] [WR]  0x01  depth=2
+[6665000] [RD]  SKIP (empty)
+[6686000] [WR]  0x02  depth=3
+[6697000] [RD]  0x00 == exp 0x00  PASS
+[6726000] [WR]  0x03  depth=3
+[6746000] [WR]  0x04  depth=4
+[6761000] [RD]  0x01 == exp 0x01  PASS
+[6796000] [WR]  0x05  depth=4
+[6809000] [RD]  0x02 == exp 0x02  PASS
+[6846000] [WR]  0x06  depth=4
+[6866000] [WR]  0x07  depth=5
+[6873000] [RD]  0x03 == exp 0x03  PASS
+[6906000] [WR]  0x08  depth=5
+[6921000] [RD]  0x04 == exp 0x04  PASS
+[6956000] [WR]  0x09  depth=5
+[6976000] [WR]  0x0a  depth=6
+[6985000] [RD]  0x05 == exp 0x05  PASS
+[7016000] [WR]  0x0b  depth=6
+[7033000] [RD]  0x06 == exp 0x06  PASS
+[7066000] [WR]  0x0c  depth=6
+[7086000] [WR]  0x0d  depth=7
+[7097000] [RD]  0x07 == exp 0x07  PASS
+[7126000] [WR]  0x0e  depth=7
+[7129000] [RD]  0x08 == exp 0x08  PASS
+[7166000] [WR]  0x0f  depth=7
+[7186000] [WR]  0x10  depth=8
+[7193000] [RD]  0x09 == exp 0x09  PASS
+[7226000] [WR]  0x11  depth=8
+[7241000] [RD]  0x0a == exp 0x0a  PASS
+[7276000] [WR]  0x12  depth=8
+[7296000] [WR]  0x13  depth=9
+[7305000] [RD]  0x0b == exp 0x0b  PASS
+[7336000] [WR]  0x14  depth=9
+[7353000] [RD]  0x0c == exp 0x0c  PASS
+[7386000] [WR]  0x15  depth=9
+[7406000] [WR]  0x16  depth=10
+[7417000] [RD]  0x0d == exp 0x0d  PASS
+[7446000] [WR]  0x17  depth=10
+[7449000] [RD]  0x0e == exp 0x0e  PASS
+[7486000] [WR]  0x18  depth=10
+[7506000] [WR]  0x19  depth=11
+[7513000] [RD]  0x0f == exp 0x0f  PASS
+[7546000] [WR]  0x1a  depth=11
+[7561000] [RD]  0x10 == exp 0x10  PASS
+[7596000] [WR]  0x1b  depth=11
+[7616000] [WR]  0x1c  depth=12
+[7625000] [RD]  0x11 == exp 0x11  PASS
+[7656000] [WR]  0x1d  depth=12
+[7673000] [RD]  0x12 == exp 0x12  PASS
+[7706000] [WR]  0x1e  depth=12
+[7726000] [WR]  0x1f  depth=13
+[7737000] [RD]  0x13 == exp 0x13  PASS
+[7766000] [WR]  0x20  depth=13
+[7769000] [RD]  0x14 == exp 0x14  PASS
+[7806000] [WR]  0x21  depth=13
+[7826000] [WR]  0x22  depth=14
+[7833000] [RD]  0x15 == exp 0x15  PASS
+[7866000] [WR]  0x23  depth=14
+[7881000] [RD]  0x16 == exp 0x16  PASS
+[7916000] [WR]  0x24  depth=14
+[7936000] [WR]  0x25  depth=15
+[7945000] [RD]  0x17 == exp 0x17  PASS
+[7976000] [WR]  0x26  depth=15
+[7993000] [RD]  0x18 == exp 0x18  PASS
+[8026000] [WR]  0x27  depth=15
+[8046000] [WR]  0x28  depth=16
+[8057000] [RD]  0x19 == exp 0x19  PASS
+[8076000] [WR]  SKIP (full)
+[8089000] [RD]  0x1a == exp 0x1a  PASS
+[8126000] [WR]  0x2a  depth=15
+[8146000] [WR]  0x2b  depth=16
+[8153000] [RD]  0x1b == exp 0x1b  PASS
+[8176000] [WR]  SKIP (full)
+[8185000] [RD]  0x1c == exp 0x1c  PASS
+[8216000] [WR]  0x2d  depth=15
+[8236000] [WR]  0x2e  depth=16
+[8249000] [RD]  0x1d == exp 0x1d  PASS
+[8276000] [WR]  SKIP (full)
+[8281000] [RD]  0x1e == exp 0x1e  PASS
+[8313000] [RD]  0x1f == exp 0x1f  PASS
+[8345000] [RD]  0x20 == exp 0x20  PASS
+[8377000] [RD]  0x21 == exp 0x21  PASS
+[8409000] [RD]  0x22 == exp 0x22  PASS
+[8441000] [RD]  0x23 == exp 0x23  PASS
+[8473000] [RD]  0x24 == exp 0x24  PASS
+[8505000] [RD]  0x25 == exp 0x25  PASS
+[8537000] [RD]  0x26 == exp 0x26  PASS
+[8569000] [RD]  0x27 == exp 0x27  PASS
+[8601000] [RD]  0x28 == exp 0x28  PASS
+[8633000] [RD]  0x2a == exp 0x2a  PASS
+[8665000] [RD]  0x2b == exp 0x2b  PASS
+[8697000] [RD]  0x2d == exp 0x2d  PASS
+[8729000] [RD]  0x2e == exp 0x2e  PASS
+[8840000] [CHK] rempty ASSERTED â PASS (T07)
+
+// TEST 08: Underflow Guard
+[9096000] [RST] Reset released
+[9256000] [T08] Underflow guard PASS
+
+// TEST 09: Full-Drain Cycles x4
+[9512000] [RST] Reset released
+[9526000] [WR]  0x00  depth=1
+[9546000] [WR]  0x01  depth=2
+[9566000] [WR]  0x02  depth=3
+[9586000] [WR]  0x03  depth=4
+[9606000] [WR]  0x04  depth=5
+[9626000] [WR]  0x05  depth=6
+[9646000] [WR]  0x06  depth=7
+[9666000] [WR]  0x07  depth=8
+[9686000] [WR]  0x08  depth=9
+[9706000] [WR]  0x09  depth=10
+[9726000] [WR]  0x0a  depth=11
+[9746000] [WR]  0x0b  depth=12
+[9766000] [WR]  0x0c  depth=13
+[9786000] [WR]  0x0d  depth=14
+[9806000] [WR]  0x0e  depth=15
+[9826000] [WR]  0x0f  depth=16
+[9865000] [CHK] wfull ASSERTED â PASS (T09 cycle1 fill)
+[9881000] [RD]  0x00 == exp 0x00  PASS
+[9913000] [RD]  0x01 == exp 0x01  PASS
+[9945000] [RD]  0x02 == exp 0x02  PASS
+[9977000] [RD]  0x03 == exp 0x03  PASS
+[10009000] [RD]  0x04 == exp 0x04  PASS
+[10041000] [RD]  0x05 == exp 0x05  PASS
+[10073000] [RD]  0x06 == exp 0x06  PASS
+[10105000] [RD]  0x07 == exp 0x07  PASS
+[10137000] [RD]  0x08 == exp 0x08  PASS
+[10169000] [RD]  0x09 == exp 0x09  PASS
+[10201000] [RD]  0x0a == exp 0x0a  PASS
+[10233000] [RD]  0x0b == exp 0x0b  PASS
+[10265000] [RD]  0x0c == exp 0x0c  PASS
+[10297000] [RD]  0x0d == exp 0x0d  PASS
+[10329000] [RD]  0x0e == exp 0x0e  PASS
+[10361000] [RD]  0x0f == exp 0x0f  PASS
+[10472000] [CHK] rempty ASSERTED â PASS (T09 cycle1 drain)
+[10486000] [WR]  0x10  depth=1
+[10506000] [WR]  0x11  depth=2
+[10526000] [WR]  0x12  depth=3
+[10546000] [WR]  0x13  depth=4
+[10566000] [WR]  0x14  depth=5
+[10586000] [WR]  0x15  depth=6
+[10606000] [WR]  0x16  depth=7
+[10626000] [WR]  0x17  depth=8
+[10646000] [WR]  0x18  depth=9
+[10666000] [WR]  0x19  depth=10
+[10686000] [WR]  0x1a  depth=11
+[10706000] [WR]  0x1b  depth=12
+[10726000] [WR]  0x1c  depth=13
+[10746000] [WR]  0x1d  depth=14
+[10766000] [WR]  0x1e  depth=15
+[10786000] [WR]  0x1f  depth=16
+[10825000] [CHK] wfull ASSERTED â PASS (T09 cycle2 fill)
+[10841000] [RD]  0x10 == exp 0x10  PASS
+[10873000] [RD]  0x11 == exp 0x11  PASS
+[10905000] [RD]  0x12 == exp 0x12  PASS
+[10937000] [RD]  0x13 == exp 0x13  PASS
+[10969000] [RD]  0x14 == exp 0x14  PASS
+[11001000] [RD]  0x15 == exp 0x15  PASS
+[11033000] [RD]  0x16 == exp 0x16  PASS
+[11065000] [RD]  0x17 == exp 0x17  PASS
+[11097000] [RD]  0x18 == exp 0x18  PASS
+[11129000] [RD]  0x19 == exp 0x19  PASS
+[11161000] [RD]  0x1a == exp 0x1a  PASS
+[11193000] [RD]  0x1b == exp 0x1b  PASS
+[11225000] [RD]  0x1c == exp 0x1c  PASS
+[11257000] [RD]  0x1d == exp 0x1d  PASS
+[11289000] [RD]  0x1e == exp 0x1e  PASS
+[11321000] [RD]  0x1f == exp 0x1f  PASS
+[11432000] [CHK] rempty ASSERTED â PASS (T09 cycle2 drain)
+[11446000] [WR]  0x20  depth=1
+[11466000] [WR]  0x21  depth=2
+[11486000] [WR]  0x22  depth=3
+[11506000] [WR]  0x23  depth=4
+[11526000] [WR]  0x24  depth=5
+[11546000] [WR]  0x25  depth=6
+[11566000] [WR]  0x26  depth=7
+[11586000] [WR]  0x27  depth=8
+[11606000] [WR]  0x28  depth=9
+[11626000] [WR]  0x29  depth=10
+[11646000] [WR]  0x2a  depth=11
+[11666000] [WR]  0x2b  depth=12
+[11686000] [WR]  0x2c  depth=13
+[11706000] [WR]  0x2d  depth=14
+[11726000] [WR]  0x2e  depth=15
+[11746000] [WR]  0x2f  depth=16
+[11785000] [CHK] wfull ASSERTED â PASS (T09 cycle3 fill)
+[11801000] [RD]  0x20 == exp 0x20  PASS
+[11833000] [RD]  0x21 == exp 0x21  PASS
+[11865000] [RD]  0x22 == exp 0x22  PASS
+[11897000] [RD]  0x23 == exp 0x23  PASS
+[11929000] [RD]  0x24 == exp 0x24  PASS
+[11961000] [RD]  0x25 == exp 0x25  PASS
+[11993000] [RD]  0x26 == exp 0x26  PASS
+[12025000] [RD]  0x27 == exp 0x27  PASS
+[12057000] [RD]  0x28 == exp 0x28  PASS
+[12089000] [RD]  0x29 == exp 0x29  PASS
+[12121000] [RD]  0x2a == exp 0x2a  PASS
+[12153000] [RD]  0x2b == exp 0x2b  PASS
+[12185000] [RD]  0x2c == exp 0x2c  PASS
+[12217000] [RD]  0x2d == exp 0x2d  PASS
+[12249000] [RD]  0x2e == exp 0x2e  PASS
+[12281000] [RD]  0x2f == exp 0x2f  PASS
+[12392000] [CHK] rempty ASSERTED â PASS (T09 cycle3 drain)
+[12406000] [WR]  0x30  depth=1
+[12426000] [WR]  0x31  depth=2
+[12446000] [WR]  0x32  depth=3
+[12466000] [WR]  0x33  depth=4
+[12486000] [WR]  0x34  depth=5
+[12506000] [WR]  0x35  depth=6
+[12526000] [WR]  0x36  depth=7
+[12546000] [WR]  0x37  depth=8
+[12566000] [WR]  0x38  depth=9
+[12586000] [WR]  0x39  depth=10
+[12606000] [WR]  0x3a  depth=11
+[12626000] [WR]  0x3b  depth=12
+[12646000] [WR]  0x3c  depth=13
+[12666000] [WR]  0x3d  depth=14
+[12686000] [WR]  0x3e  depth=15
+[12706000] [WR]  0x3f  depth=16
+[12745000] [CHK] wfull ASSERTED â PASS (T09 cycle4 fill)
+[12761000] [RD]  0x30 == exp 0x30  PASS
+[12793000] [RD]  0x31 == exp 0x31  PASS
+[12825000] [RD]  0x32 == exp 0x32  PASS
+[12857000] [RD]  0x33 == exp 0x33  PASS
+[12889000] [RD]  0x34 == exp 0x34  PASS
+[12921000] [RD]  0x35 == exp 0x35  PASS
+[12953000] [RD]  0x36 == exp 0x36  PASS
+[12985000] [RD]  0x37 == exp 0x37  PASS
+[13017000] [RD]  0x38 == exp 0x38  PASS
+[13049000] [RD]  0x39 == exp 0x39  PASS
+[13081000] [RD]  0x3a == exp 0x3a  PASS
+[13113000] [RD]  0x3b == exp 0x3b  PASS
+[13145000] [RD]  0x3c == exp 0x3c  PASS
+[13177000] [RD]  0x3d == exp 0x3d  PASS
+[13209000] [RD]  0x3e == exp 0x3e  PASS
+[13241000] [RD]  0x3f == exp 0x3f  PASS
+[13352000] [CHK] rempty ASSERTED â PASS (T09 cycle4 drain)
+
+// TEST 10: Random Stress seed=42 ops=400
+[13608000] [RST] Reset released
+[13636000] [WR]  0x26  depth=1
+[13721000] [RD]  0x26 == exp 0x26  PASS
+[13786000] [WR]  0x33  depth=1
+[13816000] [WR]  0x08  depth=2
+[13846000] [WR]  0x5d  depth=3
+[13881000] [RD]  0x33 == exp 0x33  PASS
+[13929000] [RD]  0x08 == exp 0x08  PASS
+[13966000] [WR]  0x55  depth=2
+[13977000] [RD]  0x5d == exp 0x5d  PASS
+[14006000] [WR]  0xd0  depth=2
+[14036000] [WR]  0x83  depth=3
+[14041000] [RD]  0x55 == exp 0x55  PASS
+[14105000] [RD]  0xd0 == exp 0xd0  PASS
+[14137000] [RD]  0x83 == exp 0x83  PASS
+[14166000] [WR]  0xb4  depth=1
+[14186000] [WR]  0xa3  depth=2
+[14216000] [WR]  0x9b  depth=3
+[14249000] [RD]  0xb4 == exp 0xb4  PASS
+[14286000] [WR]  0x75  depth=3
+[14316000] [WR]  0xb3  depth=4
+[14336000] [WR]  0xd0  depth=5
+[14345000] [RD]  0xa3 == exp 0xa3  PASS
+[14377000] [RD]  0x9b == exp 0x9b  PASS
+[14406000] [WR]  0x36  depth=4
+[14426000] [WR]  0x6b  depth=5
+[14441000] [RD]  0x75 == exp 0x75  PASS
+[14476000] [WR]  0xdf  depth=5
+[14496000] [WR]  0x04  depth=6
+[14516000] [WR]  0x0f  depth=7
+[14553000] [RD]  0xb3 == exp 0xb3  PASS
+[14586000] [WR]  0x42  depth=7
+[14601000] [RD]  0xd0 == exp 0xd0  PASS
+[14666000] [WR]  0xe4  depth=7
+[14681000] [RD]  0x36 == exp 0x36  PASS
+[14726000] [WR]  0xdf  depth=7
+[14756000] [WR]  0x3a  depth=8
+[14806000] [WR]  0xf4  depth=9
+[14857000] [RD]  0x6b == exp 0x6b  PASS
+[14886000] [WR]  0xcb  depth=9
+[14921000] [RD]  0xdf == exp 0xdf  PASS
+[14969000] [RD]  0x04 == exp 0x04  PASS
+[15006000] [WR]  0xc1  depth=8
+[15017000] [RD]  0x0f == exp 0x0f  PASS
+[15065000] [RD]  0x42 == exp 0x42  PASS
+[15116000] [WR]  0x8b  depth=7
+[15129000] [RD]  0xe4 == exp 0xe4  PASS
+[15176000] [WR]  0xbc  depth=7
+[15196000] [WR]  0xc9  depth=8
+[15225000] [RD]  0xdf == exp 0xdf  PASS
+[15257000] [RD]  0x3a == exp 0x3a  PASS
+[15286000] [WR]  0xc6  depth=7
+[15289000] [RD]  0xf4 == exp 0xf4  PASS
+[15321000] [RD]  0xcb == exp 0xcb  PASS
+[15366000] [WR]  0x7f  depth=6
+[15416000] [WR]  0xdd  depth=7
+[15436000] [WR]  0x97  depth=8
+[15456000] [WR]  0xce  depth=9
+[15476000] [WR]  0xa0  depth=10
+[15496000] [WR]  0x12  depth=11
+[15513000] [RD]  0xc1 == exp 0xc1  PASS
+[15546000] [WR]  0x41  depth=11
+[15561000] [RD]  0x8b == exp 0x8b  PASS
+[15596000] [WR]  0x9f  depth=11
+[15609000] [RD]  0xbc == exp 0xbc  PASS
+[15641000] [RD]  0xc9 == exp 0xc9  PASS
+[15676000] [WR]  0x80  depth=10
+[15696000] [WR]  0x38  depth=11
+[15737000] [RD]  0xc6 == exp 0xc6  PASS
+[15785000] [RD]  0x7f == exp 0x7f  PASS
+[15833000] [RD]  0xdd == exp 0xdd  PASS
+[15866000] [WR]  0xd8  depth=9
+[15896000] [WR]  0xf0  depth=10
+[15913000] [RD]  0x97 == exp 0x97  PASS
+[15945000] [RD]  0xce == exp 0xce  PASS
+[15976000] [WR]  0xa2  depth=9
+[15996000] [WR]  0x60  depth=10
+[16016000] [WR]  0xb2  depth=11
+[16036000] [WR]  0x44  depth=12
+[16076000] [WR]  0x44  depth=13
+[16096000] [WR]  0xd5  depth=14
+[16116000] [WR]  0x2b  depth=15
+[16186000] [WR]  0xa5  depth=16
+[16217000] [RD]  0xa0 == exp 0xa0  PASS
+[16249000] [RD]  0x12 == exp 0x12  PASS
+[16286000] [WR]  0x0f  depth=15
+[16306000] [WR]  0x4f  depth=16
+[16345000] [RD]  0x41 == exp 0x41  PASS
+[16377000] [RD]  0x9f == exp 0x9f  PASS
+[16406000] [WR]  0x87  depth=15
+[16409000] [RD]  0x80 == exp 0x80  PASS
+[16476000] [WR]  0x47  depth=15
+[16505000] [RD]  0x38 == exp 0x38  PASS
+[16537000] [RD]  0xd8 == exp 0xd8  PASS
+[16596000] [WR]  0x02  depth=14
+[16633000] [RD]  0xf0 == exp 0xf0  PASS
+[16665000] [RD]  0xa2 == exp 0xa2  PASS
+[16713000] [RD]  0x60 == exp 0x60  PASS
+[16796000] [WR]  0x5c  depth=12
+[16809000] [RD]  0xb2 == exp 0xb2  PASS
+[16846000] [WR]  0x5c  depth=12
+[16857000] [RD]  0x44 == exp 0x44  PASS
+[16889000] [RD]  0x44 == exp 0x44  PASS
+[16937000] [RD]  0xd5 == exp 0xd5  PASS
+[16966000] [WR]  0x7c  depth=10
+[16986000] [WR]  0x85  depth=11
+[17001000] [RD]  0x2b == exp 0x2b  PASS
+[17036000] [WR]  0x62  depth=11
+[17056000] [WR]  0xe6  depth=12
+[17113000] [RD]  0xa5 == exp 0xa5  PASS
+[17145000] [RD]  0x0f == exp 0x0f  PASS
+[17206000] [WR]  0xc2  depth=11
+[17256000] [WR]  0xca  depth=12
+[17276000] [WR]  0x27  depth=13
+[17305000] [RD]  0x4f == exp 0x4f  PASS
+[17366000] [WR]  0xc3  depth=13
+[17369000] [RD]  0x87 == exp 0x87  PASS
+[17416000] [WR]  0x23  depth=13
+[17436000] [WR]  0x92  depth=14
+[17516000] [WR]  0x0c  depth=15
+[17546000] [WR]  0x19  depth=16
+[17609000] [RD]  0x47 == exp 0x47  PASS
+[17641000] [RD]  0x02 == exp 0x02  PASS
+[17673000] [RD]  0x5c == exp 0x5c  PASS
+[17705000] [RD]  0x5c == exp 0x5c  PASS
+[17766000] [WR]  0xa3  depth=13
+[17801000] [RD]  0x7c == exp 0x7c  PASS
+[17836000] [WR]  0xbc  depth=13
+[17849000] [RD]  0x85 == exp 0x85  PASS
+[17886000] [WR]  0x81  depth=13
+[17916000] [WR]  0x47  depth=14
+[17936000] [WR]  0xd6  depth=15
+[17956000] [WR]  0x0f  depth=16
+[17961000] [RD]  0x62 == exp 0x62  PASS
+[18009000] [RD]  0xe6 == exp 0xe6  PASS
+[18046000] [WR]  0xf1  depth=15
+[18066000] [WR]  0x64  depth=16
+[18137000] [RD]  0xc2 == exp 0xc2  PASS
+[18169000] [RD]  0xca == exp 0xca  PASS
+[18201000] [RD]  0x27 == exp 0x27  PASS
+[18236000] [WR]  0x61  depth=14
+[18256000] [WR]  0x49  depth=15
+[18265000] [RD]  0xc3 == exp 0xc3  PASS
+[18297000] [RD]  0x23 == exp 0x23  PASS
+[18326000] [WR]  0xf6  depth=14
+[18377000] [RD]  0x92 == exp 0x92  PASS
+[18406000] [WR]  0xd8  depth=14
+[18426000] [WR]  0x2a  depth=15
+[18457000] [RD]  0x0c == exp 0x0c  PASS
+[18489000] [RD]  0x19 == exp 0x19  PASS
+[18521000] [RD]  0xa3 == exp 0xa3  PASS
+[18569000] [RD]  0xbc == exp 0xbc  PASS
+[18616000] [WR]  0x4b  depth=12
+[18665000] [RD]  0x81 == exp 0x81  PASS
+[18697000] [RD]  0x47 == exp 0x47  PASS
+[18745000] [RD]  0xd6 == exp 0xd6  PASS
+[18809000] [RD]  0x0f == exp 0x0f  PASS
+[18841000] [RD]  0xf1 == exp 0xf1  PASS
+[18873000] [RD]  0x64 == exp 0x64  PASS
+[18937000] [RD]  0x61 == exp 0x61  PASS
+[18969000] [RD]  0x49 == exp 0x49  PASS
+[19006000] [WR]  0xde  depth=5
+[19026000] [WR]  0x34  depth=6
+[19046000] [WR]  0x30  depth=7
+[19081000] [RD]  0xf6 == exp 0xf6  PASS
+[19113000] [RD]  0xd8 == exp 0xd8  PASS
+[19145000] [RD]  0x2a == exp 0x2a  PASS
+[19177000] [RD]  0x4b == exp 0x4b  PASS
+[19209000] [RD]  0xde == exp 0xde  PASS
+[19256000] [WR]  0x8f  depth=3
+[19273000] [RD]  0x34 == exp 0x34  PASS
+[19306000] [WR]  0x3e  depth=3
+[19337000] [RD]  0x30 == exp 0x30  PASS
+[19366000] [WR]  0x1d  depth=3
+[19369000] [RD]  0x8f == exp 0x8f  PASS
+[19401000] [RD]  0x3e == exp 0x3e  PASS
+[19433000] [RD]  0x1d == exp 0x1d  PASS
+[19476000] [WR]  0x61  depth=1
+[19516000] [WR]  0x17  depth=2
+[19536000] [WR]  0xad  depth=3
+[19545000] [RD]  0x61 == exp 0x61  PASS
+[19577000] [RD]  0x17 == exp 0x17  PASS
+[19636000] [WR]  0x25  depth=2
+[19721000] [RD]  0xad == exp 0xad  PASS
+[19756000] [WR]  0x16  depth=2
+[19769000] [RD]  0x25 == exp 0x25  PASS
+[19806000] [WR]  0x7f  depth=2
+[19826000] [WR]  0xfd  depth=3
+[19833000] [RD]  0x16 == exp 0x16  PASS
+[19866000] [WR]  0x24  depth=3
+[19886000] [WR]  0xcf  depth=4
+[19926000] [WR]  0x57  depth=5
+[19956000] [WR]  0x09  depth=6
+[19996000] [WR]  0xda  depth=7
+[20016000] [WR]  0x49  depth=8
+[20025000] [RD]  0x7f == exp 0x7f  PASS
+[20057000] [RD]  0xfd == exp 0xfd  PASS
+[20086000] [WR]  0x31  depth=7
+[20089000] [RD]  0x24 == exp 0x24  PASS
+[20156000] [WR]  0xa6  depth=7
+[20186000] [WR]  0xbd  depth=8
+[20217000] [RD]  0xcf == exp 0xcf  PASS
+[20265000] [RD]  0x57 == exp 0x57  PASS
+[20296000] [WR]  0xbd  depth=7
+[20329000] [RD]  0x09 == exp 0x09  PASS
+[20361000] [RD]  0xda == exp 0xda  PASS
+[20393000] [RD]  0x49 == exp 0x49  PASS
+[20436000] [WR]  0x0a  depth=5
+[20476000] [WR]  0x20  depth=6
+[20489000] [RD]  0x31 == exp 0x31  PASS
+[20526000] [WR]  0xab  depth=6
+[20553000] [RD]  0xa6 == exp 0xa6  PASS
+[20586000] [WR]  0x50  depth=6
+[20601000] [RD]  0xbd == exp 0xbd  PASS
+[20633000] [RD]  0xbd == exp 0xbd  PASS
+[20665000] [RD]  0x0a == exp 0x0a  PASS
+[20716000] [WR]  0x4e  depth=4
+[20729000] [RD]  0x20 == exp 0x20  PASS
+[20777000] [RD]  0xab == exp 0xab  PASS
+[20825000] [RD]  0x50 == exp 0x50  PASS
+[20857000] [RD]  0x4e == exp 0x4e  PASS
+[20906000] [WR]  0x7e  depth=1
+[20936000] [WR]  0x6f  depth=2
+[20956000] [WR]  0xd8  depth=3
+[20976000] [WR]  0xf3  depth=4
+[20985000] [RD]  0x7e == exp 0x7e  PASS
+[21033000] [RD]  0x6f == exp 0x6f  PASS
+[21113000] [RD]  0xd8 == exp 0xd8  PASS
+[21145000] [RD]  0xf3 == exp 0xf3  PASS
+[21176000] [WR]  0xe1  depth=1
+[21196000] [WR]  0xd4  depth=2
+[21216000] [WR]  0x7c  depth=3
+[21225000] [RD]  0xe1 == exp 0xe1  PASS
+[21289000] [RD]  0xd4 == exp 0xd4  PASS
+[21326000] [WR]  0x27  depth=2
+[21346000] [WR]  0x66  depth=3
+[21386000] [WR]  0x7c  depth=4
+[21406000] [WR]  0x65  depth=5
+[21426000] [WR]  0x3d  depth=6
+[21465000] [RD]  0x7c == exp 0x7c  PASS
+[21561000] [RD]  0x27 == exp 0x27  PASS
+[21606000] [WR]  0x92  depth=5
+[21641000] [RD]  0x66 == exp 0x66  PASS
+[21673000] [RD]  0x7c == exp 0x7c  PASS
+[21721000] [RD]  0x65 == exp 0x65  PASS
+[21756000] [WR]  0x62  depth=3
+[21776000] [WR]  0x51  depth=4
+[21796000] [WR]  0xd5  depth=5
+[21801000] [RD]  0x3d == exp 0x3d  PASS
+[21833000] [RD]  0x92 == exp 0x92  PASS
+[21865000] [RD]  0x62 == exp 0x62  PASS
+[21897000] [RD]  0x51 == exp 0x51  PASS
+[21929000] [RD]  0xd5 == exp 0xd5  PASS
+[22040000] [CHK] rempty ASSERTED â PASS (T10 seed42)
+
+// TEST 10: Random Stress seed=777 ops=400
+[22296000] [RST] Reset released
+[22316000] [WR]  0x19  depth=1
+[22376000] [WR]  0xcd  depth=2
+[22409000] [RD]  0x19 == exp 0x19  PASS
+[22446000] [WR]  0x76  depth=2
+[22466000] [WR]  0x5e  depth=3
+[22486000] [WR]  0xca  depth=4
+[22489000] [RD]  0xcd == exp 0xcd  PASS
+[22521000] [RD]  0x76 == exp 0x76  PASS
+[22553000] [RD]  0x5e == exp 0x5e  PASS
+[22585000] [RD]  0xca == exp 0xca  PASS
+[22636000] [WR]  0x32  depth=1
+[22696000] [WR]  0x7f  depth=2
+[22716000] [WR]  0xeb  depth=3
+[22729000] [RD]  0x32 == exp 0x32  PASS
+[22766000] [WR]  0x58  depth=3
+[22793000] [RD]  0x7f == exp 0x7f  PASS
+[22836000] [WR]  0xc7  depth=3
+[22873000] [RD]  0xeb == exp 0xeb  PASS
+[22905000] [RD]  0x58 == exp 0x58  PASS
+[22937000] [RD]  0xc7 == exp 0xc7  PASS
+[22986000] [WR]  0xdf  depth=1
+[23006000] [WR]  0xc2  depth=2
+[23026000] [WR]  0x7e  depth=3
+[23046000] [WR]  0xae  depth=4
+[23076000] [WR]  0x8c  depth=5
+[23126000] [WR]  0xae  depth=6
+[23129000] [RD]  0xdf == exp 0xdf  PASS
+[23161000] [RD]  0xc2 == exp 0xc2  PASS
+[23209000] [RD]  0x7e == exp 0x7e  PASS
+[23257000] [RD]  0xae == exp 0xae  PASS
+[23336000] [WR]  0xf9  depth=3
+[23353000] [RD]  0x8c == exp 0x8c  PASS
+[23385000] [RD]  0xae == exp 0xae  PASS
+[23416000] [WR]  0x0f  depth=2
+[23436000] [WR]  0xf1  depth=3
+[23449000] [RD]  0xf9 == exp 0xf9  PASS
+[23486000] [WR]  0x06  depth=3
+[23506000] [WR]  0xfd  depth=4
+[23545000] [RD]  0x0f == exp 0x0f  PASS
+[23576000] [WR]  0x78  depth=4
+[23676000] [WR]  0xad  depth=5
+[23706000] [WR]  0x19  depth=6
+[23721000] [RD]  0xf1 == exp 0xf1  PASS
+[23756000] [WR]  0xb8  depth=6
+[23776000] [WR]  0x33  depth=7
+[23836000] [WR]  0x4b  depth=8
+[23865000] [RD]  0x06 == exp 0x06  PASS
+[23926000] [WR]  0x66  depth=8
+[23929000] [RD]  0xfd == exp 0xfd  PASS
+[23966000] [WR]  0x8f  depth=8
+[23986000] [WR]  0x33  depth=9
+[23993000] [RD]  0x78 == exp 0x78  PASS
+[24056000] [WR]  0xcc  depth=9
+[24105000] [RD]  0xad == exp 0xad  PASS
+[24136000] [WR]  0x69  depth=9
+[24156000] [WR]  0x7b  depth=10
+[24169000] [RD]  0x19 == exp 0x19  PASS
+[24206000] [WR]  0xb8  depth=10
+[24217000] [RD]  0xb8 == exp 0xb8  PASS
+[24249000] [RD]  0x33 == exp 0x33  PASS
+[24281000] [RD]  0x4b == exp 0x4b  PASS
+[24313000] [RD]  0x66 == exp 0x66  PASS
+[24346000] [WR]  0x2c  depth=7
+[24361000] [RD]  0x8f == exp 0x8f  PASS
+[24441000] [RD]  0x33 == exp 0x33  PASS
+[24486000] [WR]  0xb8  depth=6
+[24506000] [WR]  0x16  depth=7
+[24536000] [WR]  0x64  depth=8
+[24586000] [WR]  0x2b  depth=9
+[24606000] [WR]  0x11  depth=10
+[24617000] [RD]  0xcc == exp 0xcc  PASS
+[24649000] [RD]  0x69 == exp 0x69  PASS
+[24696000] [WR]  0xb9  depth=9
+[24746000] [WR]  0x4b  depth=10
+[24766000] [WR]  0xb4  depth=11
+[24777000] [RD]  0x7b == exp 0x7b  PASS
+[24825000] [RD]  0xb8 == exp 0xb8  PASS
+[24857000] [RD]  0x2c == exp 0x2c  PASS
+[24886000] [WR]  0xd5  depth=9
+[24889000] [RD]  0xb8 == exp 0xb8  PASS
+[24921000] [RD]  0x16 == exp 0x16  PASS
+[24953000] [RD]  0x64 == exp 0x64  PASS
+[24986000] [WR]  0xc3  depth=7
+[25001000] [RD]  0x2b == exp 0x2b  PASS
+[25033000] [RD]  0x11 == exp 0x11  PASS
+[25065000] [RD]  0xb9 == exp 0xb9  PASS
+[25126000] [WR]  0xb6  depth=5
+[25146000] [WR]  0xbc  depth=6
+[25196000] [WR]  0x8c  depth=7
+[25216000] [WR]  0x09  depth=8
+[25276000] [WR]  0xbe  depth=9
+[25306000] [WR]  0xab  depth=10
+[25337000] [RD]  0x4b == exp 0x4b  PASS
+[25386000] [WR]  0x2b  depth=10
+[25406000] [WR]  0xe2  depth=11
+[25476000] [WR]  0x3a  depth=12
+[25516000] [WR]  0xed  depth=13
+[25546000] [WR]  0xc2  depth=14
+[25566000] [WR]  0xd3  depth=15
+[25609000] [RD]  0xb4 == exp 0xb4  PASS
+[25676000] [WR]  0xda  depth=15
+[25696000] [WR]  0x90  depth=16
+[25737000] [RD]  0xd5 == exp 0xd5  PASS
+[25801000] [RD]  0xc3 == exp 0xc3  PASS
+[25849000] [RD]  0xb6 == exp 0xb6  PASS
+[25886000] [WR]  0x86  depth=14
+[25906000] [WR]  0xae  depth=15
+[25961000] [RD]  0xbc == exp 0xbc  PASS
+[25993000] [RD]  0x8c == exp 0x8c  PASS
+[26026000] [WR]  0x4b  depth=14
+[26046000] [WR]  0x22  depth=15
+[26073000] [RD]  0x09 == exp 0x09  PASS
+[26106000] [WR]  0x43  depth=15
+[26121000] [RD]  0xbe == exp 0xbe  PASS
+[26166000] [WR]  0x7d  depth=15
+[26201000] [RD]  0xab == exp 0xab  PASS
+[26233000] [RD]  0x2b == exp 0x2b  PASS
+[26266000] [WR]  0x8e  depth=14
+[26297000] [RD]  0xe2 == exp 0xe2  PASS
+[26326000] [WR]  0x88  depth=14
+[26329000] [RD]  0x3a == exp 0x3a  PASS
+[26361000] [RD]  0xed == exp 0xed  PASS
+[26406000] [WR]  0xbb  depth=13
+[26409000] [RD]  0xc2 == exp 0xc2  PASS
+[26441000] [RD]  0xd3 == exp 0xd3  PASS
+[26473000] [RD]  0xda == exp 0xda  PASS
+[26506000] [WR]  0xcc  depth=11
+[26521000] [RD]  0x90 == exp 0x90  PASS
+[26553000] [RD]  0x86 == exp 0x86  PASS
+[26586000] [WR]  0x0d  depth=10
+[26601000] [RD]  0xae == exp 0xae  PASS
+[26633000] [RD]  0x4b == exp 0x4b  PASS
+[26666000] [WR]  0x68  depth=9
+[26696000] [WR]  0xa7  depth=10
+[26716000] [WR]  0xf3  depth=11
+[26761000] [RD]  0x22 == exp 0x22  PASS
+[26809000] [RD]  0x43 == exp 0x43  PASS
+[26846000] [WR]  0x6b  depth=10
+[26905000] [RD]  0x7d == exp 0x7d  PASS
+[26936000] [WR]  0x94  depth=10
+[27001000] [RD]  0x8e == exp 0x8e  PASS
+[27046000] [WR]  0xa1  depth=10
+[27049000] [RD]  0x88 == exp 0x88  PASS
+[27116000] [WR]  0x90  depth=10
+[27129000] [RD]  0xbb == exp 0xbb  PASS
+[27161000] [RD]  0xcc == exp 0xcc  PASS
+[27196000] [WR]  0xef  depth=9
+[27209000] [RD]  0x0d == exp 0x0d  PASS
+[27246000] [WR]  0x00  depth=9
+[27266000] [WR]  0x4e  depth=10
+[27273000] [RD]  0x68 == exp 0x68  PASS
+[27305000] [RD]  0xa7 == exp 0xa7  PASS
+[27337000] [RD]  0xf3 == exp 0xf3  PASS
+[27385000] [RD]  0x6b == exp 0x6b  PASS
+[27433000] [RD]  0x94 == exp 0x94  PASS
+[27476000] [WR]  0x3d  depth=6
+[27481000] [RD]  0xa1 == exp 0xa1  PASS
+[27526000] [WR]  0xb5  depth=6
+[27556000] [WR]  0xed  depth=7
+[27561000] [RD]  0x90 == exp 0x90  PASS
+[27596000] [WR]  0x4b  depth=7
+[27616000] [WR]  0xd6  depth=8
+[27625000] [RD]  0xef == exp 0xef  PASS
+[27656000] [WR]  0xcd  depth=8
+[27689000] [RD]  0x00 == exp 0x00  PASS
+[27721000] [RD]  0x4e == exp 0x4e  PASS
+[27756000] [WR]  0xbf  depth=7
+[27776000] [WR]  0x01  depth=8
+[27816000] [WR]  0xfe  depth=9
+[27833000] [RD]  0x3d == exp 0x3d  PASS
+[27865000] [RD]  0xb5 == exp 0xb5  PASS
+[27897000] [RD]  0xed == exp 0xed  PASS
+[27929000] [RD]  0x4b == exp 0x4b  PASS
+[27976000] [WR]  0x5f  depth=6
+[28026000] [WR]  0x96  depth=7
+[28041000] [RD]  0xd6 == exp 0xd6  PASS
+[28076000] [WR]  0xfb  depth=7
+[28089000] [RD]  0xcd == exp 0xcd  PASS
+[28126000] [WR]  0x03  depth=7
+[28146000] [WR]  0x04  depth=8
+[28217000] [RD]  0xbf == exp 0xbf  PASS
+[28266000] [WR]  0x51  depth=8
+[28281000] [RD]  0x01 == exp 0x01  PASS
+[28313000] [RD]  0xfe == exp 0xfe  PASS
+[28356000] [WR]  0x79  depth=7
+[28376000] [WR]  0x4b  depth=8
+[28393000] [RD]  0x5f == exp 0x5f  PASS
+[28425000] [RD]  0x96 == exp 0x96  PASS
+[28457000] [RD]  0xfb == exp 0xfb  PASS
+[28506000] [WR]  0x6f  depth=6
+[28521000] [RD]  0x03 == exp 0x03  PASS
+[28553000] [RD]  0x04 == exp 0x04  PASS
+[28586000] [WR]  0xb5  depth=5
+[28606000] [WR]  0xfb  depth=6
+[28617000] [RD]  0x51 == exp 0x51  PASS
+[28649000] [RD]  0x79 == exp 0x79  PASS
+[28681000] [RD]  0x4b == exp 0x4b  PASS
+[28716000] [WR]  0x0e  depth=4
+[28729000] [RD]  0x6f == exp 0x6f  PASS
+[28793000] [RD]  0xb5 == exp 0xb5  PASS
+[28825000] [RD]  0xfb == exp 0xfb  PASS
+[28857000] [RD]  0x0e == exp 0x0e  PASS
+[28886000] [WR]  0x22  depth=1
+[28906000] [WR]  0x8e  depth=2
+[28926000] [WR]  0x29  depth=3
+[28937000] [RD]  0x22 == exp 0x22  PASS
+[28985000] [RD]  0x8e == exp 0x8e  PASS
+[29033000] [RD]  0x29 == exp 0x29  PASS
+[29066000] [WR]  0xf7  depth=1
+[29116000] [WR]  0x5f  depth=2
+[29129000] [RD]  0xf7 == exp 0xf7  PASS
+[29166000] [WR]  0xe0  depth=2
+[29186000] [WR]  0x39  depth=3
+[29226000] [WR]  0x48  depth=4
+[29246000] [WR]  0xf1  depth=5
+[29266000] [WR]  0xda  depth=6
+[29306000] [WR]  0x5f  depth=7
+[29326000] [WR]  0xee  depth=8
+[29337000] [RD]  0x5f == exp 0x5f  PASS
+[29369000] [RD]  0xe0 == exp 0xe0  PASS
+[29401000] [RD]  0x39 == exp 0x39  PASS
+[29436000] [WR]  0xc2  depth=6
+[29456000] [WR]  0x23  depth=7
+[29465000] [RD]  0x48 == exp 0x48  PASS
+[29497000] [RD]  0xf1 == exp 0xf1  PASS
+[29561000] [RD]  0xda == exp 0xda  PASS
+[29596000] [WR]  0xde  depth=5
+[29625000] [RD]  0x5f == exp 0x5f  PASS
+[29656000] [WR]  0x1d  depth=5
+[29673000] [RD]  0xee == exp 0xee  PASS
+[29705000] [RD]  0xc2 == exp 0xc2  PASS
+[29737000] [RD]  0x23 == exp 0x23  PASS
+[29769000] [RD]  0xde == exp 0xde  PASS
+[29806000] [WR]  0xf3  depth=2
+[29817000] [RD]  0x1d == exp 0x1d  PASS
+[29846000] [WR]  0xb3  depth=2
+[29866000] [WR]  0x99  depth=3
+[29881000] [RD]  0xf3 == exp 0xf3  PASS
+[29916000] [WR]  0x2d  depth=3
+[29936000] [WR]  0x33  depth=4
+[29945000] [RD]  0xb3 == exp 0xb3  PASS
+[30006000] [WR]  0x8e  depth=4
+[30009000] [RD]  0x99 == exp 0x99  PASS
+[30046000] [WR]  0xfc  depth=4
+[30066000] [WR]  0x6e  depth=5
+[30086000] [WR]  0x01  depth=6
+[30116000] [WR]  0x13  depth=7
+[30136000] [WR]  0xc1  depth=8
+[30153000] [RD]  0x2d == exp 0x2d  PASS
+[30185000] [RD]  0x33 == exp 0x33  PASS
+[30216000] [WR]  0x98  depth=7
+[30233000] [RD]  0x8e == exp 0x8e  PASS
+[30265000] [RD]  0xfc == exp 0xfc  PASS
+[30296000] [WR]  0xed  depth=6
+[30345000] [RD]  0x6e == exp 0x6e  PASS
+[30377000] [RD]  0x01 == exp 0x01  PASS
+[30425000] [RD]  0x13 == exp 0x13  PASS
+[30476000] [WR]  0x76  depth=4
+[30556000] [WR]  0xfd  depth=5
+[30569000] [RD]  0xc1 == exp 0xc1  PASS
+[30601000] [RD]  0x98 == exp 0x98  PASS
+[30633000] [RD]  0xed == exp 0xed  PASS
+[30665000] [RD]  0x76 == exp 0x76  PASS
+[30697000] [RD]  0xfd == exp 0xfd  PASS
+[30808000] [CHK] rempty ASSERTED â PASS (T10 seed777)
+
+L
+  SIMULATION COMPLETE
+  Writes : 467  |  Reads : 459
+  PASS   : 459  |  FAIL  : 1
+  *** 1 FAILURE(S) ***
+L
+
+Simulation complete via $finish(1) at time 30808 NS + 0
+./tb/tb_async_fifo.sv:433         $finish;
+xcelium> exit
+TOOL:	xrun(64)	24.09-s007: Exiting on Mar 30, 2026 at 17:32:32 IST  (total: 00:00:04)
