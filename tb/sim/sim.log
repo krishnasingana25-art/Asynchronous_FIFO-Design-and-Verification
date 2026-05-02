@@ -1,1 +1,15 @@
-
+TOOL:	xrun(64)	24.09-s007: Started on Mar 30, 2026 at 00:43:06 IST
+xrun
+	-64bit
+	-sv
+	-timescale 1ns/1ps
+	rtl/FIFO.v
+	rtl/two_ff_sync.v
+	rtl/FIFO_memory.v
+	rtl/rptr_empty.v
+	rtl/wptr_full.v
+	tb/fifo_if.sv
+	tb/fifo_assertions.sv
+	tb/tb_async_fifo.sv
+	-top tb_async_fifo
+	-log sim/sim.log
